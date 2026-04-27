@@ -65,12 +65,11 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row gap-3 animate-fade-up animation-delay-200">
               <Link
                 href="/signup"
-                className="btn-primary text-base px-8 py-3.5 rounded-xl shadow-[0_4px_24px_-4px_rgba(224,106,14,0.45)] hover:shadow-[0_8px_32px_-4px_rgba(224,106,14,0.55)] hover:-translate-y-0.5"
-                style={{ transition: "background-color 120ms var(--ease-out-quart), box-shadow 220ms var(--ease-out-quart), transform 200ms var(--ease-spring)" }}
+                className="btn-primary shadow-[0_4px_24px_-4px_rgba(224,106,14,0.45)] hover:shadow-[0_8px_32px_-4px_rgba(224,106,14,0.55)] hover:-translate-y-0.5"
               >
                 Claim your link — free
               </Link>
-              <Link href="/login" className="btn-secondary text-base px-8 py-3.5 rounded-xl">
+              <Link href="/login" className="btn-secondary">
                 Sign in
               </Link>
             </div>
@@ -280,13 +279,7 @@ export default function LandingPage() {
 
               <Link
                 href="/signup"
-                className={[
-                  "block w-full text-center text-sm font-semibold py-3 rounded-xl transition-all duration-[120ms] font-sans",
-                  plan.featured
-                    ? "bg-white text-brand-700 hover:bg-orange-50 active:scale-[0.97]"
-                    : "bg-stone-900 text-white hover:bg-stone-800 active:scale-[0.97]",
-                ].join(" ")}
-                style={{ transition: "background-color 120ms var(--ease-out-quart), transform 150ms var(--ease-spring)" }}
+                className={`btn-card ${plan.featured ? "btn-card-light" : "btn-card-dark"}`}
               >
                 Get started
               </Link>
@@ -309,8 +302,7 @@ export default function LandingPage() {
           </p>
           <Link
             href="/signup"
-            className="inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-400 text-white font-semibold text-base px-8 py-4 rounded-2xl font-sans shadow-[0_4px_24px_-4px_rgba(242,140,24,0.5)] hover:shadow-[0_8px_32px_-4px_rgba(242,140,24,0.6)] hover:-translate-y-0.5 active:scale-[0.97]"
-            style={{ transition: "all 200ms var(--ease-out-quart)" }}
+            className="btn-primary bg-brand-500 hover:bg-brand-400 shadow-[0_4px_24px_-4px_rgba(242,140,24,0.5)] hover:shadow-[0_8px_32px_-4px_rgba(242,140,24,0.6)] hover:-translate-y-0.5"
           >
             Claim your free link →
           </Link>

@@ -23,7 +23,8 @@
     font-feature-settings: "kern" 1;
   }
 
-  button, a {
+  /* Touch targets: apply min-height only to native buttons, not every <a> */
+  button {
     @apply min-h-[44px];
   }
 
@@ -52,31 +53,62 @@
   }
 
   /* ── Buttons ──────────────────────────────────────────────── */
+
+  /* Base primary — used for hero CTAs and full-size actions */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 font-semibold;
-    @apply bg-brand-600 text-white rounded-xl;
+    @apply inline-flex items-center justify-center gap-2 font-semibold rounded-xl;
+    @apply bg-brand-600 text-white;
     @apply hover:bg-brand-700;
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2;
     @apply disabled:opacity-40 disabled:cursor-not-allowed;
-    padding: 0.75rem 1.25rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9375rem;
     transition:
       background-color var(--duration-fast) var(--ease-out-quart),
       transform var(--duration-fast) var(--ease-spring),
       box-shadow var(--duration-normal) var(--ease-out-quart);
   }
   .btn-primary:active:not(:disabled) { transform: scale(0.97); }
-  .btn-primary.btn-sm { padding: 0.05rem 0.1rem; font-size: 0.75rem; border-radius: 0.5rem; }
 
+  /* Compact nav button — visually balanced with text links */
+  .btn-primary.btn-sm {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8125rem;
+    border-radius: 0.5rem;
+  }
+
+  /* Secondary / outline button */
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 font-medium;
-    @apply border border-ivory-300 text-stone-700 bg-white px-5 py-3 rounded-xl;
-    @apply hover:bg-ivory-100 hover:border-ivory-300;
+    @apply inline-flex items-center justify-center gap-2 font-semibold rounded-xl;
+    @apply border border-ivory-300 bg-white text-stone-700;
+    @apply hover:bg-ivory-100 hover:border-stone-300;
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-300 focus-visible:ring-offset-2;
+    @apply disabled:opacity-40 disabled:cursor-not-allowed;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9375rem;
+    transition:
+      background-color var(--duration-fast) var(--ease-out-quart),
+      border-color var(--duration-fast) var(--ease-out-quart),
+      transform var(--duration-fast) var(--ease-spring);
+  }
+  .btn-secondary:active:not(:disabled) { transform: scale(0.97); }
+
+  /* Pricing card button variants */
+  .btn-card {
+    @apply block w-full text-center font-semibold rounded-xl;
+    padding: 0.7rem 1rem;
+    font-size: 0.875rem;
     transition:
       background-color var(--duration-fast) var(--ease-out-quart),
       transform var(--duration-fast) var(--ease-spring);
   }
-  .btn-secondary:active { transform: scale(0.97); }
+  .btn-card:active { transform: scale(0.97); }
+  .btn-card-light {
+    @apply bg-white text-brand-700 hover:bg-orange-50;
+  }
+  .btn-card-dark {
+    @apply bg-stone-900 text-white hover:bg-stone-800;
+  }
 
   /* ── Cards ───────────────────────────────────────────────── */
   .card {
