@@ -23,7 +23,7 @@ export default function LandingPage() {
             href="/signup"
             className="btn-primary btn-sm shadow-[0_2px_12px_-2px_rgba(224,106,14,0.35)]"
           >
-            Get started free
+            Get started
           </Link>
         </div>
       </nav>
