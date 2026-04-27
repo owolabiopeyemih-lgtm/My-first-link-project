@@ -21,7 +21,7 @@ export default function LandingPage() {
           </Link>
           <Link
             href="/signup"
-            className="btn-primary text-sm px-5 py-2.5 rounded-xl shadow-[0_2px_12px_-2px_rgba(224,106,14,0.35)]"
+            className="btn-primary text-xs px-4 py-1.5 rounded-lg shadow-[0_2px_12px_-2px_rgba(224,106,14,0.35)]"
           >
             Get started free
           </Link>
