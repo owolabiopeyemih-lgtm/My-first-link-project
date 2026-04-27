@@ -1,0 +1,214 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Auth (NextAuth v5 / Auth.js required models)
+// ─────────────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  email         String?   @unique
+  emailVerified DateTime?
+  phone         String?   @unique
+  phoneVerified DateTime?
+  name          String?
+  image         String?
+  password      String?   // hashed; null for OAuth-only users
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts     Account[]
+  sessions     Session[]
+  profile      Profile?
+  subscription Subscription?
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model OtpCode {
+  id        String   @id @default(cuid())
+  phone     String
+  code      String
+  expires   DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([phone])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Profile & Links
+// ─────────────────────────────────────────────────────────────
+
+model Profile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  username    String   @unique
+  displayName String?
+  bio         String?
+  photo       String?  // URL after upload/optimization
+  theme       Theme    @default(DEFAULT)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  links     Link[]
+  pageViews PageView[]
+
+  @@index([username])
+}
+
+enum Theme {
+  DEFAULT
+  DARK
+  SUNSET
+  FOREST
+  OCEAN
+  DESERT
+  NIGHT
+  PASTEL
+  BOLD
+  MINIMAL
+}
+
+model Link {
+  id        String   @id @default(cuid())
+  profileId String
+  type      LinkType @default(CUSTOM)
+  label     String
+  url       String
+  icon      String?  // icon name from lucide or custom SVG key
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  // Stores extra fields per type: { bankName, accountNumber } for BANK_ACCOUNT, etc.
+  metadata  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile Profile     @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  clicks  LinkClick[]
+
+  @@index([profileId, order])
+}
+
+enum LinkType {
+  CUSTOM       // generic URL
+  SOCIAL       // Instagram, TikTok, YouTube, Twitter, Spotify, Apple Music
+  PAYSTACK     // Paystack payment/storefront link
+  SELAR        // Selar product link
+  WHATSAPP     // wa.me deep link with optional prefilled message
+  BANK_ACCOUNT // display-only: NUBAN + bank name
+  OPAY         // OPay username
+  PALMPAY      // PalmPay username
+}
+
+// ─────────────────────────────────────────────────────────────
+// Analytics (privacy-first, no PII stored)
+// ─────────────────────────────────────────────────────────────
+
+model PageView {
+  id        String   @id @default(cuid())
+  profileId String
+  visitorId String?  // anonymous daily hash (ip + ua + date), never stored raw
+  referrer  String?  // e.g. "instagram.com", "tiktok.com", "direct"
+  device    Device?
+  state     String?  // Nigerian state derived from IP (e.g. "Lagos", "Kano")
+  country   String?  @default("NG")
+  hour      Int?     // 0-23 for time-of-day heatmap
+  createdAt DateTime @default(now())
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, createdAt])
+}
+
+model LinkClick {
+  id        String   @id @default(cuid())
+  linkId    String
+  visitorId String?
+  referrer  String?
+  device    Device?
+  createdAt DateTime @default(now())
+
+  link Link @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  @@index([linkId, createdAt])
+}
+
+enum Device {
+  MOBILE
+  TABLET
+  DESKTOP
+}
+
+// ─────────────────────────────────────────────────────────────
+// Billing
+// ─────────────────────────────────────────────────────────────
+
+model Subscription {
+  id               String    @id @default(cuid())
+  userId           String    @unique
+  plan             Plan      @default(FREE)
+  status           SubStatus @default(ACTIVE)
+  paystackSubCode  String?   // Paystack subscription code
+  paystackAuthCode String?   // reusable authorization for renewals
+  currentPeriodEnd DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Plan {
+  FREE
+  CREATOR // ₦2,500/mo
+  PRO     // ₦6,000/mo
+}
+
+enum SubStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PAST_DUE
+}

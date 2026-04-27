@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Motion tokens ─────────────────────────────────────────── */
+:root {
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --duration-fast:  120ms;
+  --duration-normal:220ms;
+  --duration-slow:  380ms;
+}
+
+@layer base {
+  body {
+    @apply bg-ivory-50 text-stone-900 antialiased;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  }
+
+  h1, h2, h3 {
+    @apply font-display;
+    font-feature-settings: "kern" 1;
+  }
+
+  button, a {
+    @apply min-h-[44px];
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+}
+
+@layer components {
+  /* ── Inputs ──────────────────────────────────────────────── */
+  .input {
+    @apply w-full border border-ivory-300 rounded-xl px-4 py-3 text-sm bg-white;
+    @apply placeholder:text-stone-400 text-stone-900;
+    @apply focus:outline-none focus:border-brand-400;
+    box-shadow: 0 0 0 0px rgba(242, 140, 24, 0);
+    transition:
+      border-color var(--duration-fast) var(--ease-out-quart),
+      box-shadow var(--duration-fast) var(--ease-out-quart);
+  }
+  .input:focus {
+    box-shadow: 0 0 0 3px rgba(242, 140, 24, 0.12);
+  }
+
+  /* ── Buttons ──────────────────────────────────────────────── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 font-semibold;
+    @apply bg-brand-600 text-white px-5 py-3 rounded-xl;
+    @apply hover:bg-brand-700;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2;
+    @apply disabled:opacity-40 disabled:cursor-not-allowed;
+    transition:
+      background-color var(--duration-fast) var(--ease-out-quart),
+      transform var(--duration-fast) var(--ease-spring),
+      box-shadow var(--duration-normal) var(--ease-out-quart);
+  }
+  .btn-primary:active:not(:disabled) { transform: scale(0.97); }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 font-medium;
+    @apply border border-ivory-300 text-stone-700 bg-white px-5 py-3 rounded-xl;
+    @apply hover:bg-ivory-100 hover:border-ivory-300;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-300 focus-visible:ring-offset-2;
+    transition:
+      background-color var(--duration-fast) var(--ease-out-quart),
+      transform var(--duration-fast) var(--ease-spring);
+  }
+  .btn-secondary:active { transform: scale(0.97); }
+
+  /* ── Cards ───────────────────────────────────────────────── */
+  .card {
+    @apply bg-white rounded-2xl border border-ivory-200;
+    transition:
+      box-shadow var(--duration-normal) var(--ease-out-quart),
+      border-color var(--duration-normal) var(--ease-out-quart),
+      transform var(--duration-normal) var(--ease-out-quart);
+  }
+  .card:hover {
+    @apply border-ivory-300;
+    box-shadow: 0 6px 28px -6px rgba(0, 0, 0, 0.09);
+    transform: translateY(-1px);
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .animate-fade-up {
+    animation: fade-up var(--duration-slow) var(--ease-out-expo) both;
+  }
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
+
+  /* Grain texture overlay */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 128px 128px;
+    opacity: 0.035;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
