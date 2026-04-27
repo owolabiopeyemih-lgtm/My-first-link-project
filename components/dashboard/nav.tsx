@@ -15,7 +15,7 @@ export function DashboardNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex md:flex-col gap-0.5 p-2 overflow-x-auto md:overflow-visible flex-row md:mt-2">
+    <nav className="flex md:flex-col gap-0.5 p-2 md:mt-2">
       {NAV_ITEMS.map(({ href, icon: Icon, label, exact }) => {
         const isActive = exact ? pathname === href : pathname.startsWith(href);
         return (
@@ -23,7 +23,8 @@ export function DashboardNav() {
             key={href}
             href={href}
             className={[
-              "flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm whitespace-nowrap",
+              /* mobile: column layout, desktop: row layout */
+              "flex flex-col md:flex-row items-center md:gap-2.5 px-3 py-2 rounded-xl whitespace-nowrap flex-1 md:flex-none",
               "transition-all duration-[120ms] [transition-timing-function:var(--ease-out-quart)]",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-1",
               isActive
@@ -38,7 +39,7 @@ export function DashboardNav() {
                 isActive ? "text-brand-500" : "text-gray-400",
               ].join(" ")}
             />
-            <span className="hidden md:inline">{label}</span>
+            <span className="text-[10px] md:text-sm mt-0.5 md:mt-0">{label}</span>
             {isActive && (
               <span className="hidden md:block ml-auto w-1.5 h-1.5 rounded-full bg-brand-400" />
             )}

@@ -29,7 +29,7 @@ export default function LandingPage() {
       </nav>
 
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="relative px-6 md:px-10 pt-10 pb-28 max-w-7xl mx-auto">
+      <section className="relative px-6 md:px-10 pt-10 pb-16 md:pb-28 max-w-7xl mx-auto">
         {/* Background radial glow */}
         <div
           className="absolute top-0 right-0 w-[600px] h-[600px] pointer-events-none"
@@ -92,10 +92,10 @@ export default function LandingPage() {
           </div>
 
           {/* Phone mockup */}
-          <div className="relative shrink-0 animate-fade-up animation-delay-200">
-            {/* Floating stat card — top left */}
+          <div className="relative shrink-0 animate-fade-up animation-delay-200 w-full max-w-[288px] mx-auto lg:mx-0">
+            {/* Floating stat card — top left (hidden on small screens to prevent overflow) */}
             <div
-              className="absolute -left-10 top-20 bg-white rounded-2xl px-4 py-3 shadow-xl border border-ivory-200 z-20 animate-fade-up animation-delay-300"
+              className="hidden sm:block absolute -left-10 top-20 bg-white rounded-2xl px-4 py-3 shadow-xl border border-ivory-200 z-20 animate-fade-up animation-delay-300"
               style={{ boxShadow: "0 8px 40px -8px rgba(0,0,0,0.12)" }}
             >
               <p className="text-[10px] text-stone-400 font-semibold uppercase tracking-widest">Today</p>
@@ -103,9 +103,9 @@ export default function LandingPage() {
               <p className="text-xs text-stone-500 font-medium">link clicks</p>
             </div>
 
-            {/* Floating stat card — bottom right */}
+            {/* Floating stat card — bottom right (hidden on small screens to prevent overflow) */}
             <div
-              className="absolute -right-6 bottom-24 bg-forest-800 rounded-2xl px-4 py-3 shadow-xl z-20 animate-fade-up animation-delay-400"
+              className="hidden sm:block absolute -right-6 bottom-24 bg-forest-800 rounded-2xl px-4 py-3 shadow-xl z-20 animate-fade-up animation-delay-400"
               style={{ boxShadow: "0 8px 40px -8px rgba(27,58,45,0.4)" }}
             >
               <p className="text-[10px] text-green-400 font-semibold uppercase tracking-widest">This week</p>
@@ -114,10 +114,7 @@ export default function LandingPage() {
             </div>
 
             {/* Phone shell */}
-            <div
-              className="relative"
-              style={{ width: 288 }}
-            >
+            <div className="relative w-full">
               {/* Glow behind phone */}
               <div
                 className="absolute inset-8 rounded-full blur-3xl opacity-25"
@@ -216,7 +213,7 @@ export default function LandingPage() {
             {FEATURES.map((f) => (
               <div
                 key={f.title}
-                className="bg-forest-950 p-8 space-y-4 hover:bg-forest-900 transition-colors duration-[220ms] group"
+                className="bg-forest-950 p-5 md:p-8 space-y-4 hover:bg-forest-900 transition-colors duration-[220ms] group"
               >
                 <div className="text-3xl">{f.emoji}</div>
                 <h3 className="font-display text-xl text-white">{f.title}</h3>

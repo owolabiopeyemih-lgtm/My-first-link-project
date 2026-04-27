@@ -100,7 +100,7 @@ export default async function AnalyticsPage() {
 
       {/* Time-of-day heatmap placeholder */}
       <Section title="Time of day (UTC+1 WAT)">
-        <div className="grid grid-cols-12 gap-1">
+        <div className="grid grid-cols-6 sm:grid-cols-12 gap-1">
           {Array.from({ length: 24 }).map((_, h) => {
             const entry = hourCounts.find((e) => e.hour === h);
             const max = Math.max(...hourCounts.map((e) => e._count), 1);
@@ -140,7 +140,7 @@ function BarRow({ label, count, max }: { label: string; count: number; max: numb
   const pct = max > 0 ? (count / max) * 100 : 0;
   return (
     <div className="flex items-center gap-3">
-      <span className="text-sm text-gray-700 w-32 truncate shrink-0">{label}</span>
+      <span className="text-sm text-gray-700 w-20 sm:w-32 truncate shrink-0">{label}</span>
       <div className="flex-1 bg-gray-100 rounded-full h-2">
         <div className="bg-brand-400 h-2 rounded-full" style={{ width: `${pct}%` }} />
       </div>
